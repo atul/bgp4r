@@ -341,7 +341,7 @@ module BGP
   
   class Encapsulation < Opaque
     def initialize(*args)
-      args = 0 if args.empty?
+      args[0] = 0 if args.empty?
       if args[0].is_a?(String) and args[0].is_packed?
         super(*args)
       else        
@@ -350,7 +350,7 @@ module BGP
         when :gre    ; tunnel_type = 2
         when :ipip   ; tunnel_type = 7
         else
-          tunnel_type = *args
+          tunnel_type = args[0]
         end
         super(TRANSITIVE, ENCAPSULATION, tunnel_type)
       end

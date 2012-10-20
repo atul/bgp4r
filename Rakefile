@@ -56,6 +56,28 @@ rescue LoadError
 end
 
 Rake::TestTask.new do |t|
+  t.name = 'unit_test_bgp_messages'
+  t.libs = ['.']
+  t.pattern = "test/unit/messages/*test.rb"
+  t.warning = true
+end
+
+Rake::TestTask.new do |t|
+  t.name = 'unit_test_bgp_path_attributes'
+  t.libs = ['.']
+  t.pattern = "test/unit/path_attributes/*test.rb"
+  t.warning = true
+end
+
+Rake::TestTask.new do |t|
+  t.name = 'all_unit_tests'
+  t.libs = ['.']
+  t.pattern = "test/unit/**/*test.rb"
+  t.warning = true
+end
+
+Rake::TestTask.new do |t|
+  t.name = 'all_tests'
   t.libs = ['.']
   t.pattern = "test/**/*test.rb"
   t.warning = true

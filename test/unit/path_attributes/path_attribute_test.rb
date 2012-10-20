@@ -331,7 +331,7 @@ class Path_attribute_Test < Test::Unit::TestCase # :nodoc:
     pa.as_path_sequence=[1,2,3,4]
     pa.next_hop='1.2.3.4'
     pa.local_pref=20
-    pa.med=30
+    pa.multi_exit_disc=30
     pa.communities="1113:2805"
     pa.aggregator.asn=200
     pa.aggregator.address='11.0.0.2'
