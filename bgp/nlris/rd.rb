@@ -109,6 +109,14 @@ module BGP
         end
       end
     end
+
+    def to_s2
+      case @enc_type
+      when 0 ; format "%d:%d", @admin, @assign
+      when 1 ; format "%s:%d", @admin, @assign
+      when 2 ; format "%d:%d", @admin, @assign
+      end
+    end
     
     def encoding_type?
       @enc_type

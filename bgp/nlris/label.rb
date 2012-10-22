@@ -54,6 +54,13 @@ module BGP
     end
   end
   class Label_stack
+    
+    class << self
+      def new_ntop(s)
+        new s.is_packed
+      end
+    end
+    
     def initialize(*args)
       @label_stack=[]
       if args.size==1 and args[0].is_a?(String) and args[0].is_packed?
@@ -68,9 +75,13 @@ module BGP
       @label_stack.size
     end
     def encode
-      enc = @label_stack[0..-2].collect { |l| l.encode(0) }
-      enc << @label_stack[-1].encode
-      enc.join
+      if@label_stack.size>0
+        enc = @label_stack[0..-2].collect { |l| l.encode(0) }
+        enc << @label_stack[-1].encode
+        enc.join
+      else
+        ""
+      end
     end
     def parse(s)
       while s.size>0

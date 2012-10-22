@@ -73,13 +73,16 @@ class IPAddr
   
   def _mlen_
     m = @mask_addr
-    len =  ipv6? ? 128 : 32
-    loop do
-      break if m & 1 > 0
-      m = m >> 1
-      len += -1
+    if m > 0
+      len =  ipv6? ? 128 : 32
+      loop do
+        break if m & 1 > 0
+        m = m >> 1
+        len += -1
+      end
+      len
+    else 0
     end
-    len
   end
 
 end
