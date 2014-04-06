@@ -5,8 +5,8 @@ neighbor:
   router id: 3.3.3.3
   my as: 600
   holdtime: 180
-  local address: 210.4.2.5
-  neighbor address: 210.4.2.4
+  local address: 210.4.2.6
+  neighbor address: 210.4.2.3
   capabilities: 
   - four byte as
 routes: 
