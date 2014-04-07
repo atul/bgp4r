@@ -71,12 +71,30 @@ pa = Path_attribute.new(
 
 neighbor.start
 
+i = 1
+
+while i < 100 do
+
 nlris = Nlri.new
 (1..@times.to_i).each do |n|
   nlris << (@nlri ^ n)
   next unless (n % @pack) == 0 or (n == @times)
   neighbor.send_message Update.new(pa, nlris)
   nlris = Nlri.new
+end
+
+sleep(60)
+
+withdrwas = Withdrawn.new
+(1..@times.to_i).each do |n|
+  withdraws << (@nlri ^ n)
+  next unless (n % @pack) == 0 or (n == @times)
+  neighbor.send_message Update.new(pa, withdrwas)
+  withdrwas = Withdrawn.new
+end
+
+i += 1
+
 end
 
 sleep(144000)
