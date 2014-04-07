@@ -83,15 +83,17 @@ nlris = Nlri.new
   nlris = Nlri.new
 end
 
-sleep(60)
+sleep(30)
 
 withdrwas = Withdrawn.new
 (1..@times.to_i).each do |n|
-  withdraws << (@nlri ^ n)
+  withdrwas << (@nlri ^ n)
   next unless (n % @pack) == 0 or (n == @times)
   neighbor.send_message Update.new(pa, withdrwas)
   withdrwas = Withdrawn.new
 end
+
+sleep(30)
 
 i += 1
 
