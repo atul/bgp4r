@@ -5,13 +5,13 @@ neighbor:
   router id: 3.3.3.3
   my as: 600
   holdtime: 180
-  local address: 210.4.2.6
-  neighbor address: 210.4.2.3
+  local address: 210.3.2.6
+  neighbor address: 210.3.2.3
   capabilities: 
   - four byte as
 routes: 
-  nlris: 11.0.0.0/28, 12000, 127
-  next hop: 210.4.2.5
+  nlris: 111.0.0.0/28, 12000, 127
+  next hop: 210.3.2.6
   local pref: 100
   med: 100
   origin: 0

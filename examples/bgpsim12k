@@ -79,4 +79,4 @@ nlris = Nlri.new
   nlris = Nlri.new
 end
 
-sleep(200)
+sleep(144000)
