@@ -73,7 +73,9 @@ neighbor.start
 
 i = 1
 
-while i < 100 do
+while i < 110 do
+
+@nlri = IPAddr.new "#{2*i}.0.0.0/28"
 
 nlris = Nlri.new
 (1..@times.to_i).each do |n|
@@ -83,7 +85,7 @@ nlris = Nlri.new
   nlris = Nlri.new
 end
 
-sleep(30)
+sleep(100)
 
 withdrwas = Withdrawn.new
 (1..@times.to_i).each do |n|
@@ -93,9 +95,9 @@ withdrwas = Withdrawn.new
   withdrwas = Withdrawn.new
 end
 
-sleep(30)
+sleep(50)
 
-i += 1
+i += 2
 
 end
 
