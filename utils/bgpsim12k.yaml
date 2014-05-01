@@ -10,7 +10,7 @@ neighbor:
   capabilities: 
   - four byte as
 routes: 
-  nlris: 181.0.0.0/28, 16000, 127
+  nlris: 181.0.0.0/28, 40000, 127
   next hop: 210.3.2.6
   local pref: 100
   med: 100
