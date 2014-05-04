@@ -1,7 +1,7 @@
 # YAML config file for routegen demo.
 # $ ruby routegen routegen.yaml
 --- 
-neighbor: 
+neighbor_: 
   router id: 3.3.3.3
   my as: 600
   holdtime: 180
@@ -9,8 +9,16 @@ neighbor:
   neighbor address: 210.3.2.3
   capabilities: 
   - four byte as
+neighbor:
+  router id: 3.3.3.3
+  my as: 600
+  holdtime: 180
+  local address: 2210:210:3:2::6
+  neighbor address: 2210:210:3:2::3
+  capabilities:
+  - four byte as
 routes: 
-  nlris: 181.0.0.0/28, 16000, 127
+  nlris: 181.0.0.0/28, 5, 127
   next hop: 210.3.2.6
   local pref: 100
   med: 100
