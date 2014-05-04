@@ -1,0 +1,90 @@
+# YAML config file for routegen demo.
+# $ ruby routegen routegen.yaml
+--- 
+neighbor: 
+  router id: 3.3.3.3
+  my as: 600
+  holdtime: 180
+  local address: 210.3.2.6
+  neighbor address: 210.3.2.3
+  capabilities: 
+  - four byte as
+routes: 
+  nlris: 181.0.0.0/28, 40000, 127
+  next hop: 210.3.2.6
+  local pref: 100
+  med: 100
+  origin: 0
+  communities: 100:1 200:1 300:1 2938:22 324:3432 3344:343 4466:6436 5445:3454 3545:5677 5754:5754 
+  as path: 790 90 80 2334 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 7688
+routes1:
+  nlris: 81.0.0.0/28, 20000, 127
+  next hop: 210.3.2.6
+  local pref: 100
+  med: 100
+  origin: 0
+  communities: 100:1 200:1 300:1 2938:22 324:3432 3344:343 4466:6436 5445:3454 3545:5677 5754:5754
+  as path: 790 90 80 2334 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 7688
+routes2:
+  nlris: 11.0.0.0/28, 20000, 127
+  next hop: 210.3.2.6
+  local pref: 100
+  med: 100
+  origin: 0
+  communities: 100:1 200:1 300:1 2938:22 324:3432 3344:343 4466:6436 5445:3454 3545:5677 5754:5754
+  as path: 790 90 80 2334 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 7688
+routes3:
+  nlris: 38.0.0.0/28, 20000, 127
+  next hop: 210.3.2.6
+  local pref: 100
+  med: 100
+  origin: 0
+  communities: 100:1 200:1 300:1 2938:22 324:3432 3344:343 4466:6436 5445:3454 3545:5677 5754:5754
+  as path: 790 90 80 2334 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 7688
+
+...
+
+produces:
+
+
+junos> show route logical-router Paris terse 
+
+  inet.0: 200004 destinations, 200004 routes (200004 active, 0 holddown, 0 hidden)
+  Restart Complete
+  + = Active Route, - = Last Active, * = Both
+
+  A Destination        P Prf   Metric 1   Metric 2  Next hop        AS path
+  * 11.0.0.16/28       B 170        100            >40.0.0.1        100 90 80 I
+  * 11.0.0.32/28       B 170        100            >40.0.0.1        100 90 80 I
+  * 11.0.0.48/28       B 170        100            >40.0.0.1        100 90 80 I
+  * 11.0.0.64/28       B 170        100            >40.0.0.1        100 90 80 I
+  * 11.0.0.80/28       B 170        100            >40.0.0.1        100 90 80 I
+  ...
+
+
+ios#show ip route summary | inc bgp
+bgp 100         0           1999        107946      287856
+ios#
+
+ios#show ip bgp ipv4 unicast 
+BGP table version is 13995, local router ID is 2.2.2.2
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure
+Origin codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i11.0.0.16/28     192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.32/28     192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.48/28     192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.64/28     192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.80/28     192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.96/28     192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.112/28    192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.128/28    192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.144/28    192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.160/28    192.168.1.6                   100      0 200 300 400 500 e
+*>i11.0.0.176/28    192.168.1.6                   100      0 200 300 400 500 e
+
+...
+
+  
