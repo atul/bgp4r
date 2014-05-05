@@ -76,16 +76,19 @@ i = 1
 while i < 110 do
 
 @nlri = IPAddr.new "#{2*i}.0.0.0/24"
-
+sender1 = File.open("sender1", 'w')
 nlris = Nlri.new
 (1..@times.to_i).each do |n|
+  sender1.write('mz -c 3 -B %s -t udp dp=999 -A 210.4.2.5 &' % (IPAddr.new(@nlri4 ^ n) + 1))
+  sender1.write("sleep 2\n") if (n % 500) == 0
   nlris << (@nlri ^ n)
   next unless (n % @pack) == 0 or (n == @times)
   neighbor.send_message Update.new(pa, nlris)
   nlris = Nlri.new
 end
+sender1.close()
 
-sleep(800)
+sleep(1800)
 
 withdrwas = Withdrawn.new
 (1..@times.to_i).each do |n|
