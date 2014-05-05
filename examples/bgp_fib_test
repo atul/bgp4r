@@ -79,7 +79,7 @@ while i < 40 do
 sender1 = File.open("sender1", 'w')
 nlris = Nlri.new
 (1..@times.to_i).each do |n|
-  sender1.write('mz -c 3 -B %s -t udp dp=999 -A 210.4.2.5 &' % (IPAddr.new(@nlri ^ n) + 1))
+  sender1.write('mz -c 3 -B %s -t udp dp=999 -A 210.4.2.5 &' % (IPAddr.new(@nlri ^ n) + 1)).split(/\//)[0]
   sender1.write("\n")
   sender1.write("sleep 2\n") if (n % 500) == 0
   nlris << (@nlri ^ n)
