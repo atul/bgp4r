@@ -7,16 +7,16 @@ require 'optparse'
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: example.rb [options]"
+  opts.banner = "Usage: bgp_ipv4_alpm.rb [options]"
 
-  opts.on('-a', '--afi', 'Address Family') { |v| options[:afi] = v }
-  opts.on('-s', '--safi', 'Source host') { |v| options[:safi] = v }
+#  opts.on('-a', '--afi', 'Address Family') { |v| options[:afi] = v }
+#  opts.on('-s', '--safi', 'Source host') { |v| options[:safi] = v }
   opts.on('-n', '--number', 'number of prefixes') { |v| options[:@times] = v }
 
 end.parse!
 
-dest_options = YAML.load_file('destination_config.yaml')
-puts dest_options['']
+#dest_options = YAML.load_file('destination_config.yaml')
+puts options[:@times]
 
 v4prefixes = 10
 v6prefixes = 10
