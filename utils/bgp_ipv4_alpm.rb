@@ -9,7 +9,7 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: bgp_ipv4_alpm.rb [options]"
 
-#  opts.on('-a', '--afi', 'Address Family') { |v| options[:afi] = v }
+  opts.on('-a', '--afi', 'Address Family') { |v| options[:afi] = v }
 #  opts.on('-s', '--safi', 'Source host') { |v| options[:safi] = v }
   opts.on('-n', '--number', 'number of prefixes') { |v| options[:@times] = v }
 
@@ -24,11 +24,13 @@ v6prefixes = 10
 neighbor = Neighbor.new \
   :version => 4,
   :my_as=> 600,
-  :remote_addr => 210.3.2.3,
-  :local_addr => 210.3.2.6,
-  :id=> 3.3.3.3,
+  :remote_addr => '210.3.2.3',
+  :local_addr => '210.3.2.6',
+  :id=> '3.3.3.3',
   :holdtime=> 180
 
+ neighbor.capability :as4_byte
+# neighbor.capability :as4_byte
 # neighbor.capability :as4_byte
 
 pav4 = Path_attribute.new(
@@ -54,16 +56,18 @@ neighbor.start
 
 
 @nlri4 = IPAddr.new "20.0.0.0/28"
-
+sender1 = File.open("sender1", 'w')
 nlris = Nlri.new
 (1..@times.to_i).each do |n|
-  pp 'mz -c 3 -B %s -t udp dp=999 -A 210.4.2.5 &' % (IPAddr.new(@nlri4 ^ n) + 1)
-  pp 'sleep 2' if (n % 500) == 0
+  sender1.write('mz -c 3 -B %s -t udp dp=999 -A 210.4.2.5 &' % (IPAddr.new(@nlri4 ^ n) + 1))
+  sender1.write("sleep 2\n") if (n % 500) == 0
   nlris << (@nlri4 ^ n)
   next unless (n % @pack) == 0 or (n == @times)
   neighbor.send_message Update.new(pav4, nlris)
   nlris = Nlri.new
 end
+
+sender1.close()
 
 =begin
 
@@ -91,7 +95,7 @@ require 'pp'
 
 @nlri4 = IPAddr.new "20.0.0.0/28"
 (1..@times.to_i).each do |n|
-pp 'mz -c 3 -B %s -t udp dp=999 -A 210.4.2.5 &' % (IPAddr.new(@nlri4 ^ n) + 1)
+pp 'mz -c 3 -B %s -t udp dp=999 -A 210.4.2.5 &' % (IPAddr.new(@nlri4 ^ n) + 1).split(/\//)[0]
 pp 'sleep 2' if (n % 3) == 0
 next unless (n % 127) == 0 or (n== @times)
 end
@@ -105,6 +109,46 @@ end
 #  nlris = Nlri.new
 end
 
+-------------------------------------
+require 'bgp4r'
+
+include BGP
+
+Log.create
+Log.level=Logger::DEBUG
+
+neighbor = Neighbor.new \
+    :version=> 4,
+    :my_as=> 100,
+    :remote_addr => '169.253.253.128',
+    :id=> '20.20.20.20',
+    :holdtime=> 180
+
+  neighbor.capability_mbgp_ipv4_unicast
+  neighbor.capability_mbgp_ipv6_unicast
+
+ nexthop='fe80::20c:29ff:fcab:13b'
+
+ pa = Path_attribute.new(
+   Origin.new(0),
+   Multi_exit_disc.new(0),
+   As_path.new(),
+   Mp_reach.new(:afi=>2, :safi=>1, :nexthop=> nexthop,
+                :nlris=> ['2014:50:4::/64', '2014:51:4::/64', '2014:52:4::/64'])
+ )
+
+ neighbor.start
+
+ Log.level=Logger::INFO
+
+ neighbor.send_message Update.new(pa)
+
+ sleep (300)
+
+----------------
+require 'bgp4r'
+include BGP
+require 'ipaddress'
 
 
 =end
