@@ -7,7 +7,7 @@ Log.level=Logger::INFO
 
 neighbor = Neighbor.new \
 :version=> 4,
-:my_as=> 100,
+:my_as=> 600,
 :remote_addr => '210.3.2.3',
 :local_address => '210.3.2.6',
 :id=> '20.20.20.20',
