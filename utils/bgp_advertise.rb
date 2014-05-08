@@ -38,7 +38,7 @@ neighbor = Neighbor.new \
 
 neighbor.capability_mbgp_ipv4_unicast
 neighbor.capability_mbgp_ipv6_unicast
-neighbor.capability :as4_byte
+#neighbor.capability :as4_byte
 
 pav4 = Path_attribute.new(
   Origin.new(0),
@@ -48,6 +48,7 @@ pav4 = Path_attribute.new(
   As_path.new(*("790 90 80 2334 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 7688".split.map { |as| as.to_i}))
 )
 
+=begin
 pav6 = Path_attribute.new(
     Origin.new(0),
     Next_hop.new(@nh6),
@@ -55,7 +56,7 @@ pav6 = Path_attribute.new(
     Communities.new(*("100:1 200:1 300:1 2938:22 324:3432 3344:343 4466:6436 5445:3454 3545:5677 5754:5754".split.map { |com| com.to_i})),
     As_path.new(*("790 90 80 2334 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 7688".split.map { |as| as.to_i}))
 )
-
+=end
 
 
 
@@ -77,6 +78,7 @@ begin
   sender1.close()
 end if @times4
 
+# v6 is not complete yet
 begin
 
   @nlri6 = IPAddr.new "5000:9999:8888:1::0/64"
@@ -89,7 +91,7 @@ begin
 
 end if @times6
 
-#sleep(1800)
+sleep(1800)
 
 =begin
 require 'bgp4r'
