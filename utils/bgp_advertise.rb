@@ -21,9 +21,9 @@ end.parse!
 
 puts options[:@local_add]
 pp options
-@remote_add = options[:remote_add]
-@local_add = options[:local_add]
-@local_as = options[:local_as]
+@remote_add = options[:remote_add] ||= '210.3.2.3'
+@local_add = options[:local_add] ||= '210.3.2.6'
+@local_as = options[:local_as] ||= '600'
 @times4 = options[:times4]
 @times6 = options[:times6]
 @nh6 = options[:nh6]
