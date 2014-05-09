@@ -47,6 +47,7 @@ pav4 = Path_attribute.new(
   Communities.new(*("100:1 200:1 300:1 2938:22 324:3432 3344:343 4466:6436 5445:3454 3545:5677 5754:5754".split.map { |com| com.to_i})),
   As_path.new(*("790 90 80 2334 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 7688".split.map { |as| as.to_i}))
 )
+pp pav4
 
 =begin
 pav6 = Path_attribute.new(
