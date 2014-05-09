@@ -61,7 +61,7 @@ pav6 = Path_attribute.new(
 
 
 neighbor.start
-
+@pack4 = 10
 begin
   @nlri4 = IPAddr.new "20.0.0.0/28"
   sender1 = File.open("sender1", 'w')
@@ -70,7 +70,7 @@ begin
      sender1.write('mz -c 1 -B %s -t udp dp=999 -A #{@local_add} &' % (IPAddr.new(@nlri4 ^ n) + 1))
      sender1.write("sleep 2\n") if (n % 500) == 0
      nlris << (@nlri4 ^ n)
-     next unless (n % @pack) == 0 or (n == @times4)
+     next unless (n % @pack4) == 0 or (n == @times4)
      neighbor.send_message Update.new(pav4, nlris)
      nlris = Nlri.new
   end
