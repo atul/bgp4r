@@ -66,7 +66,7 @@ begin
   @nlri4 = IPAddr.new "20.0.0.0/28"
   sender1 = File.open("sender1", 'w')
   nlris = Nlri.new
-    (1..@times.to_i).each do |n|
+    (1..@times4.to_i).each do |n|
      sender1.write('mz -c 1 -B %s -t udp dp=999 -A #{@local_add} &' % (IPAddr.new(@nlri4 ^ n) + 1))
      sender1.write("sleep 2\n") if (n % 500) == 0
      nlris << (@nlri4 ^ n)
@@ -79,7 +79,7 @@ begin
 end if @times4
 
 # v6 is not complete yet
-begin
+=begin
 
   @nlri6 = IPAddr.new "5000:9999:8888:1::0/64"
    (1..@times.to_i).each do |n|
@@ -89,7 +89,7 @@ begin
    nlris = Nlri.new
   end
 
-end if @times6
+=end if @times6
 
 sleep(1800)
 
