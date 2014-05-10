@@ -73,7 +73,6 @@ begin
      neighbor.send_message Update.new(pa4, nlris)
      nlris = Nlri.new
   end
-
   sender1.close()
 end if @times4
 
