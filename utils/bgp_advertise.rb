@@ -26,7 +26,7 @@ pp options
 @local_as = options[:local_as] ||= 600
 @times4 = options[:times4]
 @times6 = options[:times6]
-@nh6 = options[:nh6] ||= '2210:210:3:2::6'
+nexthop6 = options[:nh6] ||= '2210:210:3:2::6'
 
 neighbor = Neighbor.new \
   :version => 4,
@@ -92,7 +92,7 @@ subnet = Fiber.new do
 end
 
 while nets = subnet.resume
-  neighbor.send_message Update.new pa6.replace(Mp_reach.new(:afi=>2, :safi=>1, :nexthop=> @nh6, :nlris=> nets))
+  neighbor.send_message Update.new pa6.replace(Mp_reach.new(:afi=>2, :safi=>1, :nexthop=> nexthop6, :nlris=> nets))
 end
 end if @times6
 sleep(1800)
