@@ -76,7 +76,7 @@ begin
   sender1.close()
 end if @times4
 
-
+begin
 @pack6 = 5
 subnet = Fiber.new do
   nlri6 = IPAddr.new "5000:9999:8888:1::0/64"
@@ -89,12 +89,12 @@ subnet = Fiber.new do
    end
   Fiber.yield prefixes unless prefixes.empty?
   nil
-end if @times6
+end
 
 while nets = subnet.resume
   neighbor.send_message Update.new pa6.replace(Mp_reach.new(:afi=>2, :safi=>1, :nexthop=> @nh6, :nlris=> nets))
 end
-
+end if @times6
 sleep(1800)
 
 
