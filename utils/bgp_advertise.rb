@@ -80,6 +80,7 @@ end if @times4
 @pack6 = 5
 subnet = Fiber.new do
   nlri6 = IPAddr.new "5000:9999:8888:1::0/64"
+  prefixes = []
    (@times6.to_i).times do |n|
      prefixes << (@nlri6 ^ n)
      next unless (n % @pack6) == 0
