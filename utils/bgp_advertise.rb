@@ -32,7 +32,7 @@ neighbor = Neighbor.new \
   :version => 4,
   :my_as=> @local_as,
   :remote_addr => @remote_add,
-  :local_addr => @local_add
+  :local_addr => @local_add,
   :id=> '3.3.3.3',
   :holdtime=> 180
 
