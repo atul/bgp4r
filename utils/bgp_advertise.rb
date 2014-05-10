@@ -32,7 +32,7 @@ neighbor = Neighbor.new \
   :version => 4,
   :my_as=> @local_as,
   :remote_addr => @remote_add,
-  :local_addr => @local_add,
+  :local_addr => @local_add
   :id=> '3.3.3.3',
   :holdtime=> 180
 
@@ -40,26 +40,25 @@ neighbor.capability_mbgp_ipv4_unicast
 neighbor.capability_mbgp_ipv6_unicast
 #neighbor.capability :as4_byte
 
-pav4 = Path_attribute.new(
+pa4 = Path_attribute.new(
   Origin.new(0),
   Next_hop.new(@local_add),
-  Local_pref.new(200),
+#  Local_pref.new(200),
   Communities.new(*("100:1 200:1 300:1 2938:22 324:3432 3344:343 4466:6436 5445:3454 3545:5677 5754:5754".split.map { |com| com.to_i})),
   As_path.new(*("790 90 80 2334 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 7688".split.map { |as| as.to_i}))
 )
-pp pav4
+pp pa4
 
-=begin
-pav6 = Path_attribute.new(
+
+pa6 = Path_attribute.new(
     Origin.new(0),
-    Next_hop.new(@nh6),
-    Local_pref.new(200),
+    #Local_pref.new(200),
     Communities.new(*("100:1 200:1 300:1 2938:22 324:3432 3344:343 4466:6436 5445:3454 3545:5677 5754:5754".split.map { |com| com.to_i})),
     As_path.new(*("790 90 80 2334 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 7688".split.map { |as| as.to_i}))
 )
-=end
 
 
+pp pa6
 
 neighbor.start
 @pack4 = 10
@@ -68,29 +67,31 @@ begin
   sender1 = File.open("sender1", 'w')
   nlris = Nlri.new
     (1..@times4.to_i).each do |n|
-     sender1.write('mz -c 1 -B %s -t udp dp=999 -A #{@local_add} &' % (IPAddr.new(@nlri4 ^ n) + 1))
+     sender1.write("mz -c 1 -B %s -t udp dp=999 -A #{@local_add} &\n" % (IPAddr.new(@nlri4 ^ n) + 1))
      sender1.write("sleep 2\n") if (n % 500) == 0
      nlris << (@nlri4 ^ n)
      next unless (n % @pack4) == 0 or (n == @times4)
-     neighbor.send_message Update.new(pav4, nlris)
+     neighbor.send_message Update.new(pa4, nlris)
      nlris = Nlri.new
   end
 
   sender1.close()
 end if @times4
 
-# v6 is not complete yet
-=begin
 
-  @nlri6 = IPAddr.new "5000:9999:8888:1::0/64"
-   (1..@times.to_i).each do |n|
-   nlris << (@nlri6 ^ n)
-   next unless (n % @pack) == 0 or (n == @times)
-   neighbor.send_message Update.new(pav4, nlris)
-   nlris = Nlri.new
-  end
 
-=end if @times6
+subnet = Fiber.new do
+  nlri6 = IPAddr.new "5000:9999:8888:1::0/64"
+   @times6.times do |n|
+     prefixes << (@nlri6 ^ n)
+     next unless (n % @pack) == 0
+     Fiber.yield prefixes
+     prefixes=[]
+   end
+  Fiber.yield prefixes unless prefixes.empty?
+  nil
+end if @times6
+
 
 sleep(1800)
 
