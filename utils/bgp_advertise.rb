@@ -26,7 +26,7 @@ pp options
 @local_as = options[:local_as] ||= 600
 @times4 = options[:times4]
 @times6 = options[:times6]
-@nh6 = options[:nh6]
+@nh6 = options[:nh6] ||= '2210:210:3:2::6'
 
 neighbor = Neighbor.new \
   :version => 4,
