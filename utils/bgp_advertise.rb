@@ -92,7 +92,7 @@ subnet = Fiber.new do
 end
 
 while nets = subnet.resume
-  neighbor.send_message Update.new pa6.replace(Mp_reach.new(:afi=>2, :safi=>1, :nexthop=> nexthop6, :nlris=> nets))
+  neighbor.send_message Update.new pa6.replace(Mp_reach.new(:afi=>2, :safi=>1, :nexthop=> '2210:210:3:2::6', :nlris=> nets))
 end
 end if @times6
 sleep(1800)
