@@ -96,30 +96,6 @@ while nets = subnet.resume
 end
 end if @times6
 
-=begin
-# 22 routes, 5 routes per update
-subnet = Fiber.new do
-  ipaddr = IPAddr.new "2014:13:11::1/64"
-  pack=15
-  prefixes=[]
-  (@times6).to_i.times do |i|
-    prefixes << (ipaddr ^ i)
-    next unless (i%pack)==0
-    Fiber.yield prefixes
-    prefixes=[]
-  end
-  Fiber.yield prefixes unless prefixes.empty?
-  nil
-end if @times6
-
-#neighbor.start
-
-while nets = subnet.resume
-  neighbor.send_message Update.new pa.replace(Mp_reach.new(:afi=>2, :safi=>1, :nexthop=> nexthop, :nlris=> nets))
-  #neighbor.send_message Update.new pa.replace(Mp_reach.new(:afi=>2, :safi=>1, :nlris=> nets))
-end
-=end
-
 
 sleep(1800)
 
