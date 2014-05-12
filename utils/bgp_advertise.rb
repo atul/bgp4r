@@ -63,32 +63,36 @@ neighbor.start
 @pack4 = 100
 begin
   @nlri4 = IPAddr.new "20.0.0.0/28"
-  sender1 = File.open("sender1", 'w')
+  senderv4 = File.open("senderv4", 'w')
   nlris = Nlri.new
     (1..@times4.to_i).each do |n|
-     sender1.write("mz -c 1 -B %s -t udp dp=999 -A #{@local_add} &\n" % (IPAddr.new(@nlri4 ^ n) + 1))
-     sender1.write("sleep 2\n") if (n % 500) == 0
+     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@local_add} &\n" % (IPAddr.new(@nlri4 ^ n) + 1))
+     senderv4.write("sleep 2\n") if (n % 500) == 0
      nlris << (@nlri4 ^ n)
      next unless (n % @pack4) == 0 or (n == @times4)
      neighbor.send_message Update.new(pa4, nlris)
      nlris = Nlri.new
   end
-  sender1.close()
+  senderv4.close()
 end if @times4
 
 begin
-subnet = Fiber.new do
-  address = IPAddr.new "5000:9999:8888:1::0/64"
-  pack = 15
-  prefixes = []
-   (@times6).to_i.times do |n|
+  senderv6 = File.open("senderv6", 'w')
+  subnet = Fiber.new do
+    address = IPAddr.new "5000:9999:8888:1::0/64"
+    pack = 15
+    prefixes = []
+    (@times6).to_i.times do |n|
+     senderv6.write("ping6 %s -c 1 -w 1 &\n" % (IPAddr.new(address ^ n) + 1))
+     senderv6.write("sleep 2\n") if (n % 500) == 0
      prefixes << (address ^ n)
      next unless (n % pack) == 0
      Fiber.yield prefixes
      prefixes=[]
-   end
-  Fiber.yield prefixes unless prefixes.empty?
-  nil
+    end
+    Fiber.yield prefixes unless prefixes.empty?
+    nil
+    senderv6.close()
 end
 
 while nets = subnet.resume
