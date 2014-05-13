@@ -15,6 +15,8 @@ OptionParser.new do |opts|
   opts.on('-4', '--v4prefixes INTEGER', 'number of v4 prefixes') { |v| options[:times4] = v }
   opts.on('-6', '--v6prefixes INTEGER', 'number of v4 prefixes') { |v| options[:times6] = v }
   opts.on('-h', '--nh_address6 NHADDR', 'IPv6 NH address') { |v| options[:nh6] = v }
+  opts.on('-s', '--source_address IPADDR', 'traffic source address') { |v| options[:source_add] = v }
+
 
 
 end.parse!
@@ -66,7 +68,7 @@ begin
   senderv4 = File.open("senderv4", 'w')
   nlris = Nlri.new
     (1..@times4.to_i).each do |n|
-     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@local_add} &\n" % (IPAddr.new(@nlri4 ^ n) + 1))
+     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@local_add} &\n" % (IPAddr.new(@nlri4 ^ n).succ))
      senderv4.write("sleep 2\n") if (n % 500) == 0
      nlris << (@nlri4 ^ n)
      next unless (n % @pack4) == 0 or (n == @times4)
