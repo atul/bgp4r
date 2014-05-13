@@ -28,6 +28,7 @@ pp options
 @local_as = options[:local_as] ||= 600
 @times4 = options[:times4]
 @times6 = options[:times6]
+@source_add = options[:source_add] ||= '210.4.2.5'
 nexthop6 = options[:nh6] ||= '2210:210:3:2::6'
 
 neighbor = Neighbor.new \
@@ -68,7 +69,7 @@ begin
   senderv4 = File.open("senderv4", 'w')
   nlris = Nlri.new
     (1..@times4.to_i).each do |n|
-     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@local_add} &\n" % (IPAddr.new(@nlri4 ^ n).succ))
+     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@source_add} &\n" % (IPAddr.new(@nlri4 ^ n).succ))
      senderv4.write("sleep 2\n") if (n % 500) == 0
      nlris << (@nlri4 ^ n)
      next unless (n % @pack4) == 0 or (n == @times4)
