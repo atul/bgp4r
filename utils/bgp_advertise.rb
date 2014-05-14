@@ -69,8 +69,9 @@ begin
   senderv4 = File.open("senderv4", 'w')
   nlris = Nlri.new
     (1..@times4.to_i).each do |n|
-     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@source_add} &\n" % (IPAddr.new(@nlri4 ^ n).succ))
-     senderv4.write("sleep 2\n") if (n % 500) == 0
+     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@source_add} \n" % (IPAddr.new(@nlri4 ^ n).succ))
+#     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@source_add} &\n" % (IPAddr.new(@nlri4 ^ n).succ))
+#     senderv4.write("sleep 2\n") if (n % 500) == 0
      nlris << (@nlri4 ^ n)
      next unless (n % @pack4) == 0 or (n == @times4)
      neighbor.send_message Update.new(pa4, nlris)
@@ -86,8 +87,9 @@ begin
     pack = 15
     prefixes = []
     (@times6).to_i.times do |n|
-     senderv6.write("ping6 %s -c 1 -w 1 &\n" % (IPAddr.new(address ^ n).succ))
-     senderv6.write("sleep 2\n") if (n % 500) == 0
+     senderv6.write("ping6 %s -c 1 -w 1 \n" % (IPAddr.new(address ^ n).succ))
+#     senderv6.write("ping6 %s -c 1 -w 1 &\n" % (IPAddr.new(address ^ n).succ))
+#     senderv6.write("sleep 2\n") if (n % 500) == 0
      prefixes << (address ^ n)
      next unless (n % pack) == 0
      Fiber.yield prefixes
