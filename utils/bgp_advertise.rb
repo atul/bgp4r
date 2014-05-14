@@ -104,6 +104,6 @@ end
 end if @times6
 
 
-sleep(1800)
+sleep(36000)
 
 
