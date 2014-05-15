@@ -72,8 +72,9 @@ begin
 #     senderv4.write("mz -c 2 -d 250msec -B %s -t udp dp=999 -A #{@source_add} \n" % (IPAddr.new(@nlri4 ^ n).succ))
      nlris << (@nlri4 ^ n)
      next unless (n % @pack4) == 0  or (n == @times4)
-     neighbor.send_message Update.new(pa4, nlris)
      senderv4.write("mz -c 2 -d 250msec -B %s -t udp dp=999 -A #{@source_add} \n" % (IPAddr.new(@nlri4 ^ n).succ))
+     neighbor.send_message Update.new(pa4, nlris)
+
 #     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@source_add} &\n" % (IPAddr.new(@nlri4 ^ n).succ))
 #     senderv4.write("sleep 2\n") if (n % 500) == 0
       nlris = Nlri.new
