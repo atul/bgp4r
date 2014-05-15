@@ -68,10 +68,10 @@ begin
   @nlri4 = IPAddr.new "20.0.0.0/28"
   senderv4 = File.open("senderv4", 'w')
   nlris = Nlri.new
-    (@times4).to_i.each do |n|
+    (1..@times4.to_i).each do |n|
 #     senderv4.write("mz -c 2 -d 250msec -B %s -t udp dp=999 -A #{@source_add} \n" % (IPAddr.new(@nlri4 ^ n).succ))
      nlris << (@nlri4 ^ n)
-     next unless (n % @pack4) == 0 # or (n == @times4)
+     next unless (n % @pack4) == 0  or (n == @times4)
      neighbor.send_message Update.new(pa4, nlris)
      senderv4.write("mz -c 2 -d 250msec -B %s -t udp dp=999 -A #{@source_add} \n" % (IPAddr.new(@nlri4 ^ n).succ))
 #     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@source_add} &\n" % (IPAddr.new(@nlri4 ^ n).succ))
