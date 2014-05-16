@@ -63,7 +63,7 @@ pa6 = Path_attribute.new(
 pp pa6
 
 neighbor.start
-@pack4 = 90
+@pack4 = 100
 begin
   @nlri4 = IPAddr.new "20.0.0.0/28"
   senderv4 = File.open("senderv4", 'w')
