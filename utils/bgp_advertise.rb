@@ -88,7 +88,8 @@ begin
     pack = 10
     prefixes = []
     (@times6).to_i.times do |n|
-     senderv6.write("ping6 %s -c 1 -w 1 \n" % (IPAddr.new(address ^ n).succ))
+     senderv6.write("%s \n" % (IPAddr.new(address ^ n).succ))
+#     senderv6.write("ping6 %s -c 1 -w 1 \n" % (IPAddr.new(address ^ n).succ))
 #     senderv6.write("ping6 %s -c 1 -w 1 &\n" % (IPAddr.new(address ^ n).succ))
 #     senderv6.write("sleep 2\n") if (n % 500) == 0
      prefixes << (address ^ n)
