@@ -87,7 +87,8 @@ end if @times4
 begin
   senderv6 = File.open("senderv6", 'w')
   subnet = Fiber.new do
-    address = IPAddr.new "#{3000+rand(8000)}:#{rand(9999)}:#{rand(8888)}:1::0/64"
+#    address = IPAddr.new "#{3000+rand(8000)}:#{rand(9999)}:#{rand(8888)}:1::0/64"
+    address = IPAddr.new "#{3000+rand(5000)}:9999:8888:1::0/64"
     pack = 10
     prefixes = []
     (@times6).to_i.times do |n|
