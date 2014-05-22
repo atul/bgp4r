@@ -83,7 +83,7 @@ begin
 #     senderv4.write("sleep 2\n") if (n % 500) == 0
       nlris = Nlri.new
    end
-   sleep 60
+   sleep 30
    }
 
     sender.close()
