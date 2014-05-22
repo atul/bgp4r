@@ -69,6 +69,7 @@ begin
   senderv4 = File.open("senderv4", 'w')
   sender = File.open("sender", 'w')
   nlris = Nlri.new
+   100.times {
    (1..@times4.to_i).each do |n|
      sender.write("%s \n" % (IPAddr.new(@nlri4 ^ n).succ))
      senderv4.write("mz -c 2 -d 250msec -B %s -t udp dp=999 -A #{@source_add} \n" % (IPAddr.new(@nlri4 ^ n).succ))
@@ -82,6 +83,9 @@ begin
 #     senderv4.write("sleep 2\n") if (n % 500) == 0
       nlris = Nlri.new
    end
+   sleep 60
+   }
+
     sender.close()
     senderv4.close()
 end if @times4
