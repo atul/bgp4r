@@ -74,7 +74,9 @@ begin
      senderv4.write("mz -c 2 -d 250msec -B %s -t udp dp=999 -A #{@source_add} \n" % (IPAddr.new(@nlri4 ^ n).succ))
      nlris << (@nlri4 ^ n)
      next unless (n % @pack4) == 0  or (n == @times4)
-     neighbor.send_message Update.new(pa4.replace(Communities.new(*("100:1 200:1 300:1 #{rand(9999)}:22 324:3432 3344:343 4466:6436 #{rand(5445)}:3454 3545:5677 5754:#{rand(9999)}".split.map { |com| com.to_i})), AS_path.new(*("790 90 #{rand(60000)} #{rand(60000)} 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 #{rand(60000)}".split.map { |as| as.to_i})) ), nlris)
+     neighbor.send_message Update.new(pa4.replace(Communities.new(*("100:1 200:1 300:1 #{rand(9999)}:22 324:3432 3344:343 \
+4466:6436 #{rand(5445)}:3454 3545:5677 5754:#{rand(9999)}".split.map { |com| com.to_i})), AS_path.new(*("790 90 #{rand(60000)} \
+ #{rand(60000)} 544 56 67 889 3111 777 8 879 0900 88 7654 3211 113 43434 666 343 4534 667 #{rand(60000)}".split.map { |as| as.to_i})) ), nlris)
 
 #     senderv4.write("mz -c 1 -B %s -t udp dp=999 -A #{@source_add} &\n" % (IPAddr.new(@nlri4 ^ n).succ))
 #     senderv4.write("sleep 2\n") if (n % 500) == 0
