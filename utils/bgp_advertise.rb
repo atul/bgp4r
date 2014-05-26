@@ -13,7 +13,8 @@ OptionParser.new do |opts|
   opts.on('-l', '--local_address IPADDR', 'Local address') { |v| options[:local_add] = v }
   opts.on('-a', '--local_as ASN', 'Local ASN') { |v| options[:local_as] = v }
   opts.on('-4', '--v4prefixes INTEGER', 'number of v4 prefixes') { |v| options[:times4] = v }
-  opts.on('-6', '--v6prefixes INTEGER', 'number of v4 prefixes') { |v| options[:times6] = v }
+  opts.on('-6', '--v6prefixes INTEGER', 'number of v6 prefixes') { |v| options[:times6] = v }
+  opts.on('-7', '--v6prefixes INTEGER', 'number of v6 long prefixes') { |v| options[:times7] = v }
   opts.on('-h', '--nh_address6 NHADDR', 'IPv6 NH address') { |v| options[:nh6] = v }
   opts.on('-s', '--source_address IPADDR', 'traffic source address') { |v| options[:source_add] = v }
 
@@ -28,6 +29,7 @@ pp options
 @local_as = options[:local_as] ||= 600
 @times4 = options[:times4]
 @times6 = options[:times6]
+@times7 = options[:times7]
 @source_add = options[:source_add] ||= '210.4.2.5'
 nexthop6 = options[:nh6] ||= '2210:210:3:2::6'
 
@@ -87,29 +89,38 @@ end if @times4
 begin
   senderv6 = File.open("senderv6", 'w')
   subnet = Fiber.new do
-#    address = IPAddr.new "#{3000+rand(8000)}:#{rand(9999)}:#{rand(8888)}:1::0/64"
-    address = IPAddr.new "#{3000+rand(5000)}:#{rand(9999)}:8888:1::0/64"
+    address = IPAddr.new "#{3000+rand(4000)}:#{rand(9999)}:8888:1::0/64"
     pack = 10
     prefixes = []
     (@times6).to_i.times do |n|
      senderv6.write("%s \n" % (IPAddr.new(address ^ n).succ))
-#     senderv6.write("ping6 %s -c 1 -w 1 \n" % (IPAddr.new(address ^ n).succ))
-#     senderv6.write("ping6 %s -c 1 -w 1 &\n" % (IPAddr.new(address ^ n).succ))
-#     senderv6.write("sleep 2\n") if (n % 500) == 0
      prefixes << (address ^ n)
      next unless (n % pack) == 0
      Fiber.yield prefixes
      prefixes=[]
     end
+
+    address = IPAddr.new "#{7001+rand(2000)}:#{rand(9999)}:8888:1::0/96"
+    (@times7).to_i.times do |n| 
+       senderv6.write("%s \n" % (IPAddr.new(address ^ n).succ))
+       prefixes << (address ^ n) 
+       next unless (n % pack) == 0
+       Fiber.yield prefixes
+       prefixes=[]
+    end if @times7
+        
     Fiber.yield prefixes unless prefixes.empty?
     nil
-    senderv6.close()
 end
 
 while nets = subnet.resume
   neighbor.send_message Update.new pa6.replace(Mp_reach.new(:afi=>2, :safi=>1, :nexthop=> nexthop6, :nlris=> nets))
 end
+ 
+    
+senderv6.close()
 end if @times6
+
 
 
 sleep(36000)
