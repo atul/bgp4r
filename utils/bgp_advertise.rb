@@ -64,6 +64,12 @@ pa6 = Path_attribute.new(
 
 pp pa6
 
+def ranbyte()
+  n = rand(219)
+  if n == 127 then n = rand(219) end
+  return n
+end
+
 neighbor.start
 @pack4 = 100
 begin
@@ -72,7 +78,7 @@ begin
   sender = File.open("sender", 'w')
   nlris = Nlri.new
    (1..@times4.to_i).each do |n|
-     @nlri4 = IPAddr.new "#{rand(219)}.0.0.0/28"
+     @nlri4 = IPAddr.new "#{ranbyte}.#{rand(254)}.#{rand(254)}.0/28"
      sender.write("%s \n" % (IPAddr.new(@nlri4 ^ n).succ))
      senderv4.write("mz -c 2 -d 250msec -B %s -t udp dp=999 -A #{@source_add} \n" % (IPAddr.new(@nlri4 ^ n).succ))
      nlris << (@nlri4 ^ n)
@@ -94,7 +100,7 @@ begin
     pack = 10
     prefixes = []
     (@times6).to_i.times do |n|
-     address = IPAddr.new "#{3000+rand(4000)}:#{rand(9999)}:8888:1::0/64"
+     address = IPAddr.new "#{3000+rand(4000)}:#{rand(9999)}:#{rand(9999)}:#{rand(9999)}::0/64"
      senderv6.write("%s \n" % (IPAddr.new(address ^ n).succ))
      prefixes << (address ^ n)
      next unless (n % pack) == 0
