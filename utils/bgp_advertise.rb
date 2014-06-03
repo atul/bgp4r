@@ -66,7 +66,7 @@ pp pa6
 
 def ranbyte()
   n = rand(219)
-  if n == 127 then n = rand(219) end
+  while n == 127 do n = rand(219) end
   return n
 end
 
