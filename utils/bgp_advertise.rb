@@ -68,7 +68,7 @@ def ranbyte()
   n = rand(221)
     while n == 127 || n == 126 || n == 0 do
       #print " Oops got #{n} "
-      n = rand(125)
+      n = rand(120) + 1
     end
   #print " #{n} "
   return n
