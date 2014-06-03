@@ -70,6 +70,7 @@ def ranbyte()
       #print "Oops got 127"
       n = rand(219)
     end
+  #print " #{n} "
   return n
 end
 
