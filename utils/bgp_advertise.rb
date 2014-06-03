@@ -66,8 +66,8 @@ pp pa6
 
 def ranbyte()
   n = rand(221)
-    while n == 127 do
-      #print "Oops got 127"
+    while n == 127 || n == 0 do
+      #print " Oops got #{n} "
       n = rand(221)
     end
   #print " #{n} "
