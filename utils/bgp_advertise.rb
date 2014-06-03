@@ -66,7 +66,10 @@ pp pa6
 
 def ranbyte()
   n = rand(219)
-  while n == 127 do n = rand(219) end
+    while n == 127 do
+      #print "Oops got 127"
+      n = rand(219)
+    end
   return n
 end
 
@@ -108,8 +111,9 @@ begin
      prefixes=[]
     end
 
-    address = IPAddr.new "#{7001+rand(2000)}:#{rand(9999)}:8888:1::0/96"
-    (@times7).to_i.times do |n| 
+
+    (@times7).to_i.times do |n|
+       address = IPAddr.new "#{7001+rand(2000)}:#{rand(9999)}:#{rand(9999)}:#{rand(9999)}::0/96"
        senderv6.write("%s \n" % (IPAddr.new(address ^ n).succ))
        prefixes << (address ^ n) 
        next unless (n % pack) == 0
