@@ -65,10 +65,10 @@ pa6 = Path_attribute.new(
 pp pa6
 
 def ranbyte()
-  n = rand(219)
+  n = rand(221)
     while n == 127 do
       #print "Oops got 127"
-      n = rand(219)
+      n = rand(221)
     end
   #print " #{n} "
   return n
