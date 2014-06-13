@@ -75,7 +75,7 @@ def ranbyte()
 end
 
 neighbor.start
-@pack4 = 100
+@pack4 = 10
 begin
   #@nlri4 = IPAddr.new "#{rand(219)}.0.0.0/28"
   senderv4 = File.open("senderv4", 'w')
@@ -120,7 +120,7 @@ begin
        next unless (n % pack) == 0
        Fiber.yield prefixes
        prefixes=[]
-    end if @times7
+    end
         
     Fiber.yield prefixes unless prefixes.empty?
     nil
@@ -132,7 +132,7 @@ end
  
     
 senderv6.close()
-end if @times6
+end if @times6 or @times7
 
 
 
