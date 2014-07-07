@@ -111,7 +111,7 @@ begin
       Fiber.yield nlris
       nlris = Nlri.new
     end
-    Fiber.yield nlirs unless nlris.nil?
+    Fiber.yield nlris unless nlris.nil?
     nil
   end
   while nets = subnet.resume
