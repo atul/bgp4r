@@ -109,7 +109,7 @@ begin
       nlris << (@nlri4 ^ n)
       next unless (n % pack) == 0
       Fiber.yield nlris
-      nlris = Nliri.new
+      nlris = Nlri.new
     end
     Fiber.yield nlirs unless nlris.nil?
     nil
