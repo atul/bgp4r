@@ -95,6 +95,28 @@ begin
    end
     sender.close()
     senderv4.close()
+end if @times4_old
+begin
+  senderv4 = File.open("senderv4", 'w')
+  sender = File.open("sender", 'w')
+  subnet = Fiber.new do
+    pack = 100
+    nlris = Nlri.new
+    (@times4).to_i.times do |n|
+      @nlri4 = IPAddr.new "#{ranbyte}.#{rand(254)}.#{rand(254)}.0/28"
+      sender.write("%s \n" % (IPAddr.new(@nlri4 ^ n).succ))
+      senderv4.write("mz -c 2 -d 250msec -B %s -t udp dp=999 -A #{@source_add} \n" % (IPAddr.new(@nlri4 ^ n).succ))
+      nlris << (@nlri4 ^ n)
+      next unless (n % pack) == 0
+      Fiber.yield nlris
+      nlris = Nliri.new
+    end
+    Fiber.yield nlirs unless nlris.nil?
+    nil
+  end
+  while nets = subnet.resume
+    neighbor.send_message Update.new(pa4, nlris)
+  end
 end if @times4
 
 begin
@@ -111,7 +133,6 @@ begin
      Fiber.yield prefixes
      prefixes=[]
     end
-
 
     (@times7).to_i.times do |n|
        address = IPAddr.new "#{7001+rand(2000)}:#{rand(9999)}:#{rand(9999)}:#{rand(9999)}::0/96"
