@@ -117,6 +117,8 @@ begin
   while nets = subnet.resume
     neighbor.send_message Update.new(pa4, nlris)
   end
+  sender.close()
+  senderv4.close()
 end if @times4
 
 begin
